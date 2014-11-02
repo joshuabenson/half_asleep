@@ -1,0 +1,103 @@
+
+
+
+
+class Bank
+	attr_accessor :account_balances
+	def initialize(bank_name, stored_money, city)
+
+		@bank_name = bank_name
+		@stored_money = stored_money.to_f
+		@city = city
+		@years = 1.+(rand(1000))
+		
+		@account_balances = {}
+
+	Kernel.puts("We are #{@bank_name} bank. Proudly serving #{@city} for over #{@years} years. We currently have $#{@stored_money.to_s} our vault, and we'd would love to take your money today.")
+
+	end
+
+	def open_account(name_first, initial_deposit)
+
+		
+		@name_first = name_first
+		@initial_deposit = initial_deposit
+		@stored_money += initial_deposit
+
+		@account_name = @name_first
+
+		key = @account_name
+		@account_balances[key] = initial_deposit  #adds key/value to local hash variable 
+
+Kernel.puts("Thank you for choosing #{@bank_name} bank, proudly taking money from people like you for over #{@years} years. Your initial deposit of #{@initial_deposit} has been recieved.")
+Kernel.puts(@account_balances)
+end
+
+	
+	def check_balance(account_name)
+
+		$k = @account_balances[account_name].to_f #returns a global variable for use by transfer_balance method.  Try without global?
+		return $k
+	end
+
+	def change_balance(account_name, new_amount)
+
+
+
+		@account_balances[account_name] = new_amount  #changes local hash key of account_name (the name_first) to new_amount.  it works!
+
+	end
+
+	def transfer_balance(account_name, bank_name, transfer_amount)  #   moves money from person's account at bank instance used to call this method, to 
+						
+		bank_name.check_balance(account_name)
+
+		current_balance = $k
+		
+
+		@account_balances[account_name] -= transfer_amount		
+		
+		current_balance += transfer_amount 											
+
+		bank_name.change_balance(account_name, current_balance)
+
+	end
+
+end
+
+class Person < Bank
+	attr_accessor :account_balances
+def initialize(bank_name, stored_money, city)
+super(stored_money)
+#@bank_name = bank_name
+bank_name = @name_first
+		@stored_money = stored_money.to_f
+		#@city = city
+		@years = 1.+(rand(70))
+		
+		@account_balances = {}
+
+		#@bank_name.open_account(bank_name, stored_money)
+
+	Kernel.puts("Welcome to the world #{@name_first}.")
+
+end
+
+
+#		
+#		@name_first = name_first
+#		@pocket_money = pocket_money
+#		key = @name_first
+#		@Person_balances[key] = Person_balances{}
+#
+#Kernel.puts("Welcome to the world #{@name_first}. Its not easy getting by as a #{gender} person, especially with all these corrupt financial institutions.")
+#	end
+#
+#
+#	def pocket_transfer(amount)
+#
+#		
+#
+#	end
+
+end
