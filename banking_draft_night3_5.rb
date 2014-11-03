@@ -4,6 +4,7 @@
 
 class Bank
 	attr_accessor :account_balances
+	attr_accessor :bank_name
 	def initialize(bank_name, stored_money, city)
 
 		@bank_name = bank_name
@@ -32,36 +33,111 @@ class Bank
 Kernel.puts("Thank you for choosing #{@bank_name} bank, proudly taking money from people like you for over #{@years} years. Your initial deposit of #{@initial_deposit} has been recieved.")
 Kernel.puts(@account_balances)
 end
+	def add_accounts() # adds up the total stored in customer accounts, and adds that to the bank's stored money to give the vault total.
 
-	
-	def check_balance(account_name)
+		account_values = @account_balances.values.inject(:+)
 
-		$k = @account_balances[account_name].to_f #returns a global variable for use by transfer_balance method.  Try without global?
-		return $k
+		vault_total = account_values + @stored_money
+
+		#total_values.inject(:+)
+
+
+		Kernel.puts("#{@bank_name} has $#{vault_total} in its vault.")
 	end
+	
+	
 
 	def change_balance(account_name, new_amount)
 
 
-
-		@account_balances[account_name] = new_amount  #changes local hash key of account_name (the name_first) to new_amount.  it works!
+		@account_balances[account_name] = new_amount  #changes instance hash key of account_name (the name_first) to new_amount.  it works!
 
 	end
 
-	def transfer_balance(account_name, bank_name, transfer_amount)  #   moves money from person's account at bank instance used to call this method, to 
+	def check_balances()
+
+
+		Kernel.puts(@account_balances)
+
+	end
+
+	
+
+	def transfer_balance(account_name_from, account_name_to, transfer_amount)  #   moves money from between accounts at the bank used to call method
 						
-		bank_name.check_balance(account_name)
 
-		current_balance = $k
+		if (@account_balances[account_name_from].to_i >= transfer_amount.to_i)
+
+
+		@account_balances[account_name_from] -= transfer_amount		
 		
+		@account_balances[account_name_to] += transfer_amount 		
 
-		@account_balances[account_name] -= transfer_amount		
+		Kernel.puts("Successfully transfered $#{transfer_amount} from #{account_name_from} to #{account_name_to}.")									
+else
+	Kernel.puts("Sorry, #{account_name_from} only has #{@account_balances[account_name_from].to_s}, which is not enough funds to transfer #{transfer_amount} to #{account_name_to}'s account.")
+	end
+
+end
+
+	def transfer_different_bank(outside_bank, account_name_from, account_name_to, transfer_amount)
+
+		@outside_bank = outside_bank.bank_name
+		@outside_bank = @outside_bank.to_s
 		
-		current_balance += transfer_amount 											
+		if (outside_bank.account_balances[account_name_from].to_i >= transfer_amount.to_i)
 
-		bank_name.change_balance(account_name, current_balance)
+
+
+		Kernel.puts("This will transfer $#{transfer_amount} from #{account_name_from}'s account at #{@outside_bank} bank to #{account_name_to}'s account at #{@bank_name} bank. Are you sure? (yes/no). Type no for more options")
+		@query = gets.chomp
+		@query.to_s
+
+		@query_yes = ["yes", "y", "sure", "ok", "alright", "fuck yeah", "ye", "es"]
+
+		if 	@query_yes.include?(@query.to_s)
+
+				@outside_balance = (outside_bank.account_balances[account_name_from].to_i)	
+
+				outside_bank.account_balances[account_name_from] = (@outside_balance - transfer_amount)
+
+			#	@outside_bank.account_balances[account_name_from] = (@outside_balance - transfer_amount)
+
+			@account_balances[account_name_to] += transfer_amount
+
+		else
+			Kernel.puts("Transfer $#{transfer_amount} from #{account_name_to}'s account at #{@bank_name} bank to #{account_name_from}'s account at #{@outside_bank}? (yes/no)")
+			@query2 = gets.chomp
+			@query2.to_s
+		if 	@query_yes.include?(@query2.to_s)
+
+			if (@account_balances[account_name_to].to_i >= transfer_amount.to_i)
+		
+		@outside_balance = (outside_bank.account_balances[account_name_from].to_i)	
+
+				outside_bank.account_balances[account_name_from] = (@outside_balance + transfer_amount)
+
+			
+
+			@account_balances[account_name_to] -= transfer_amount
+
+		else
+			Kernel.puts("Sorry, can't do that.  #{account_name_to} doesn't have enough money.")
+		end
+
+		else
+			Kernel.puts("Transaction cancelled.")
+		end
 
 	end
+		
+		else
+			Kernel.puts("Sorry, can't do that.  #{account_name_from} doesn't have enough money.")
+
+
+end
+
+end
 
 end
 
