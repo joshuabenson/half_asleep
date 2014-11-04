@@ -204,3 +204,23 @@ Kernel.puts("Welcome to the world #{@name_first}. Its not easy getting by as a #
 
 end
 
+josh = Person.new("Josh", "male", 700)
+flosh = Person.new("Flosh", "cis-male", 50)
+frank = Person.new("Frank", "prefer not to say", 340)
+sarah = Person.new("Sarah", "female", 2000)
+carly = Person.new("Carly", "transgender", 500)
+faj = Person.new("Faj", "big guy", 40)
+
+dumb = Bank.new("Dumb", 1000000, "Lizordville")
+
+ruthless = Bank.new("Ruthless", 5555555, "Seattle")
+
+fed = Bank.new("Federal Reserve", 1000000000000, "Washington")
+
+china = Bank.new("Bank of China", 30000000000000, "China")
+
+
+
+
+
+
